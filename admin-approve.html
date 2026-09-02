@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People's Press · Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="post-store.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+        .sub {
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        .admin-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .admin-row {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .admin-row .info {
+            flex: 1;
+        }
+        .admin-row .title {
+            font-weight: 600;
+        }
+        .admin-row .meta {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        .admin-row .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-approve {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .btn-approve:hover {
+            background: #a7f3d0;
+        }
+        .btn-decline {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .btn-decline:hover {
+            background: #fecaca;
+        }
+        .btn-pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .status-badge {
+            padding: 0.2rem 0.9rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: capitalize;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-declined {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .empty {
+            padding: 2rem;
+            text-align: center;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <h1>Admin Review</h1>
+    <div class="sub">Review pending posts and approve or decline them</div>
+
+    <div class="admin-grid" id="adminList"></div>
+
+    <script>
+        (function() {
+            function renderAdmin() {
+                const posts = window.PostStore.getPosts();
+                const container = document.getElementById('adminList');
+
+                if (posts.length === 0) {
+                    container.innerHTML = '<div class="empty">No posts found</div>';
+                    return;
+                }
+
+                container.innerHTML = posts.map(p => `
+                    <div class="admin-row" data-id="${p.id}">
+                        <div class="info">
+                            <div class="title">${p.title}</div>
+                            <div class="meta">
+                                ${p.location} · ${new Date(p.submittedAt).toLocaleDateString()}
+                            </div>
+                        </div>
+                        <span class="status-badge status-${p.status}">${p.status}</span>
+                        <div class="actions">
+                            ${p.status === 'pending' ? `
+                                <button class="btn btn-approve" data-id="${p.id}" data-action="approve">Approve</button>
+                                <button class="btn btn-decline" data-id="${p.id}" data-action="decline">Decline</button>
+                            ` : `
+                                <span style="font-size:0.85rem;color:#6b7280;">Reviewed</span>
+                            `}
+                        </div>
+                    </div>
+                `).join('');
+
+                // Event listeners
+                document.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        const action = this.dataset.action;
+                        const post = window.PostStore.getPostById(id);
+                        if (!post) return;
+
+                        if (confirm(`Are you sure you want to ${action} "${post.title}"?`)) {
+                            window.PostStore.updatePost(id, { status: action });
+                            renderAdmin();
+                            // Broadcast change to other tabs
+                            window.PostStore.broadcastChange('update');
+                        }
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', renderAdmin);
+            } else {
+                renderAdmin();
+            }
+
+            window.PostStore.onStorageChange(function() {
+                renderAdmin();
+            });
+        })();
+    </script>
+</body>
+</html>

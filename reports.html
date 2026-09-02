@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People's Press · My Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #111827;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 180px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            padding: 1.2rem 0.8rem;
+            flex-shrink: 0;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 40;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 0.4rem 1.2rem 0.4rem;
+            border-bottom: 1px solid #f1f3f6;
+            margin-bottom: 1.2rem;
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand span {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: -0.2px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            color: #4b5563;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.12s, color 0.12s;
+            text-decoration: none;
+            margin-bottom: 0.1rem;
+        }
+
+        .nav-item i {
+            width: 20px;
+            font-size: 1.1rem;
+            display: inline-flex;
+            justify-content: center;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #111827;
+        }
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .nav-item.logout {
+            margin-top: auto;
+            border-top: 1px solid #f1f3f6;
+            padding-top: 1rem;
+            color: #6b7280;
+        }
+
+        .nav-item.logout:hover {
+            color: #dc2626;
+            background: #fef2f2;
+        }
+
+        /* ===== MAIN WRAPPER ===== */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar {
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #1f2937;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .topbar-brand .circle {
+            width: 32px;
+            height: 32px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .topbar-brand span {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.4rem;
+        }
+
+        .topbar-right .bell {
+            font-size: 1.3rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .topbar-right .bell:hover {
+            color: #2563eb;
+        }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f9fafb;
+            padding: 0.3rem 1rem 0.3rem 0.6rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .profile-area:hover {
+            background: #f1f5f9;
+            border-color: #e5e7eb;
+        }
+
+        .profile-avatar {
+            width: 34px;
+            height: 34px;
+            background: #7c3aed;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .profile-info .anon-id {
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .profile-info .chevron {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            margin-left: 2px;
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            padding: 2rem 2.5rem 3rem;
+            flex: 1;
+            background: #f8fafc;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.3px;
+        }
+
+        .page-header .sub {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-top: 0.1rem;
+        }
+
+        /* ===== TABLE ===== */
+        .table-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            margin-top: 1.5rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0 0.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #f1f3f6;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td .post-title {
+            font-weight: 500;
+            color: #111827;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        td .post-title:hover {
+            color: #2563eb;
+        }
+
+        td .post-unavailable {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .reason-badge {
+            background: #f1f5f9;
+            color: #4b5563;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.9rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: capitalize;
+            display: inline-block;
+        }
+
+        .status-under_review {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .status-resolved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .clickable-row {
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+
+        .clickable-row:hover {
+            background: #f8fafc;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #d1d5db;
+            margin-bottom: 0.6rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            color: #374151;
+            margin-bottom: 0.2rem;
+        }
+
+        .empty-state .btn-browse {
+            display: inline-block;
+            margin-top: 0.8rem;
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+
+        .empty-state .btn-browse:hover {
+            background: #1d4ed8;
+        }
+
+        /* ===== INFO BOX ===== */
+        .info-box {
+            margin-top: 1.5rem;
+            padding: 1rem 1.2rem;
+            background: #f5f3ff;
+            border: 1px solid #e5d9f5;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .info-box i {
+            color: #7c3aed;
+            font-size: 1.3rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+
+        .info-box .content {
+            padding: 0;
+            background: transparent;
+            font-size: 0.9rem;
+            color: #4b3d6b;
+            line-height: 1.5;
+        }
+
+        .info-box .content strong {
+            color: #5b21b6;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 520px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 2rem 2rem 1.8rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            transform: scale(0.96);
+            transition: transform 0.25s ease;
+            position: relative;
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.15s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #111827;
+        }
+
+        .modal-content h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            color: #111827;
+        }
+
+        .modal-content .modal-sub {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-detail-row {
+            display: flex;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f1f3f6;
+            font-size: 0.9rem;
+        }
+
+        .modal-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .modal-detail-row .label {
+            font-weight: 600;
+            color: #4b5563;
+            min-width: 110px;
+            flex-shrink: 0;
+        }
+
+        .modal-detail-row .value {
+            color: #111827;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .modal-actions .btn-close-modal {
+            background: none;
+            border: 1px solid #d1d5db;
+            padding: 0.5rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            color: #6b7280;
+            transition: background 0.15s;
+        }
+
+        .modal-actions .btn-close-modal:hover {
+            background: #f3f4f6;
+        }
+
+        /* ===== SIDEBAR OVERLAY ===== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 45;
+        }
+
+        .sidebar-overlay.open {
+            display: block;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f2937;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: none;
+            align-items: center;
+            gap: 0.7rem;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        .toast.success i {
+            color: #34d399;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .content {
+                padding: 1.5rem 1.8rem 2.5rem;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                transform: translateX(-100%);
+                width: 200px;
+                z-index: 50;
+                border-right: 1px solid #e5e7eb;
+                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.04);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 1.2rem;
+            }
+
+            .content {
+                padding: 1.2rem 1rem 2rem;
+            }
+
+            .table-wrapper {
+                overflow-x: visible;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                margin-bottom: 0.8rem;
+                padding: 0.8rem;
+                background: white;
+            }
+
+            td {
+                border: none;
+                padding: 0.3rem 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #6b7280;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                padding: 0 0.8rem;
+                height: 54px;
+            }
+
+            .topbar-brand span {
+                font-size: 0.9rem;
+            }
+
+            .profile-info .anon-id {
+                display: none;
+            }
+
+            .profile-area {
+                padding: 0.2rem 0.6rem 0.2rem 0.4rem;
+            }
+
+            .content {
+                padding: 1rem 0.6rem 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .modal-content {
+                padding: 1.2rem;
+            }
+
+            .info-box {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 821px) {
+            .sidebar {
+                transform: translateX(0) !important;
+            }
+        }
+
+        /* ===== UTILITIES ===== */
+        i[data-lucide] {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">PP</div>
+            <span>People's Press</span>
+        </div>
+
+        <a href="dashboard.html" class="nav-item" data-tab="dashboard">
+            <i data-lucide="layout-dashboard"></i> Dashboard
+        </a>
+        <a href="my-posts.html" class="nav-item" data-tab="myposts">
+            <i data-lucide="file-text"></i> My Posts
+        </a>
+        <a href="new-post.html" class="nav-item" data-tab="newpost">
+            <i data-lucide="plus-circle"></i> New Post
+        </a>
+        <a href="my-reports.html" class="nav-item active" data-tab="reports">
+            <i data-lucide="flag"></i> My Reports
+        </a>
+        <a href="profile.html" class="nav-item" data-tab="profile">
+            <i data-lucide="user"></i> Profile
+        </a>
+        <a href="settings.html" class="nav-item" data-tab="settings">
+            <i data-lucide="settings"></i> Settings
+        </a>
+        <div class="nav-item logout" id="logoutBtn">
+            <i data-lucide="log-out"></i> Logout
+        </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <div class="main-wrapper">
+
+        <!-- ===== TOPBAR ===== -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle sidebar">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="topbar-brand">
+                    <div class="circle">PP</div>
+                    <span>People's Press</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="bell"><i data-lucide="bell"></i></div>
+                <div class="profile-area" id="profileArea">
+                    <div class="profile-avatar">A</div>
+                    <div class="profile-info">
+                        <span class="anon-id" id="topbarAnonId">Anon ID: PP8967</span>
+                        <span class="chevron"><i data-lucide="chevron-down"></i></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== CONTENT ===== -->
+        <main class="content">
+            <div class="page-header">
+                <h1>My Reports</h1>
+                <div class="sub">Track news you've reported</div>
+            </div>
+
+            <!-- Reports Table -->
+            <div class="table-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>News Title</th>
+                                <th>Reason</th>
+                                <th>Reported On</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <i data-lucide="info"></i>
+                <div class="content">
+                    <strong>Thank you for helping us keep the platform clean and trustworthy.</strong>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <h2>Report Details</h2>
+            <div class="modal-sub" id="modalSub">#report_id</div>
+
+            <div id="modalBody">
+                <!-- Rendered by JS -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-close-modal" id="modalCloseActionBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <i data-lucide="check-circle"></i>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ============================================================
+    POST STORE — shared storage layer
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // POST STORE — shared storage layer
+        // ============================================================
+        (function() {
+            'use strict';
+
+            const POSTS_KEY = 'peoplesPressPosts';
+            const USER_KEY = 'peoplesPressCurrentUser';
+            const REPORTS_KEY = 'peoplesPressReports';
+            const ID_KEY = 'peoplesPress_nextId';
+
+            const SAMPLE_USER = {
+                anonymousId: 'PP8367',
+                memberSince: '2026-08-05'
+            };
+
+            const SAMPLE_POSTS = [{
+                id: 'post_1',
+                title: 'Heavy rainfall causes flooding in Assam',
+                category: 'Environment',
+                location: 'Assam, India',
+                description: 'Continuous heavy rainfall since yesterday has caused flooding in multiple areas.',
+                source: 'Local witness reports',
+                evidence: ['https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=800&h=500&fit=crop&crop=center&auto=format'],
+                status: 'approved',
+                featured: true,
+                submittedAt: '2026-08-10T11:30:00Z',
+                anonymousId: 'PP8367',
+                likes: 125,
+                comments: 12,
+                translations: {}
+            }, {
+                id: 'post_2',
+                title: 'Local school students protest for better facilities',
+                category: 'Education',
+                location: 'Guwahati, Assam',
+                description: 'Students are demanding improvements in basic school facilities.',
+                source: 'Student representative',
+                evidence: ['https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=500&fit=crop&crop=center&auto=format'],
+                status: 'approved',
+                featured: false,
+                submittedAt: '2026-08-09T16:15:00Z',
+                anonymousId: 'PP8367',
+                likes: 78,
+                comments: 5,
+                translations: {}
+            }, {
+                id: 'post_3',
+                title: 'Water shortage in several areas continues',
+                category: 'Infrastructure',
+                location: 'Dibrugarh, Assam',
+                description: 'People are facing difficulties due to irregular water supply.',
+                source: 'Local resident',
+                evidence: ['https://images.unsplash.com/photo-1545665277-5937489579f2?w=800&h=500&fit=crop&crop=center&auto=format'],
+                status: 'approved',
+                featured: false,
+                submittedAt: '2026-08-08T09:20:00Z',
+                anonymousId: 'PP8367',
+                likes: 34,
+                comments: 3,
+                translations: {}
+            }, {
+                id: 'post_4',
+                title: 'Garbage not collected for more than a week',
+                category: 'Infrastructure',
+                location: 'Jorhat, Assam',
+                description: 'Waste bins in several wards have not been cleared since last week.',
+                source: 'Local shopkeeper',
+                evidence: ['https://images.unsplash.com/photo-1605600659908-0ef719419d41?w=800&h=500&fit=crop&crop=center&auto=format'],
+                status: 'pending',
+                featured: false,
+                submittedAt: '2026-08-07T14:10:00Z',
+                anonymousId: 'PP8367',
+                likes: 0,
+                comments: 0,
+                translations: {}
+            }, {
+                id: 'post_5',
+                title: 'Power cuts continue in many areas',
+                category: 'Infrastructure',
+                location: 'Dibrugarh, Assam',
+                description: 'Residents are facing frequent power cuts for the past several days.',
+                source: 'Local resident',
+                evidence: ['https://images.unsplash.com/photo-1545665277-5937489579f2?w=800&h=500&fit=crop&crop=center&auto=format'],
+                status: 'pending',
+                featured: false,
+                submittedAt: '2026-08-06T12:05:00Z',
+                anonymousId: 'PP8367',
+                likes: 0,
+                comments: 0,
+                translations: {}
+            }];
+
+            const SAMPLE_REPORTS = [{
+                id: 'report_1',
+                postId: 'post_1',
+                anonymousId: 'PP8367',
+                reason: 'False Information',
+                details: 'The information in this post appears to be inaccurate and misleading.',
+                submittedAt: '2026-08-08T10:30:00Z',
+                status: 'under_review'
+            }, {
+                id: 'report_2',
+                postId: 'post_2',
+                anonymousId: 'PP8367',
+                reason: 'Incorrect Information',
+                details: 'The reported information does not match the actual schedule.',
+                submittedAt: '2026-08-07T11:00:00Z',
+                status: 'resolved'
+            }, {
+                id: 'report_3',
+                postId: 'post_3',
+                anonymousId: 'PP8367',
+                reason: 'Copyright',
+                details: 'This article appears to contain copied copyrighted material without attribution.',
+                submittedAt: '2026-08-06T09:30:00Z',
+                status: 'resolved'
+            }];
+
+            function getPosts() {
+                try {
+                    const data = localStorage.getItem(POSTS_KEY);
+                    if (!data) {
+                        initializeSample();
+                        return getPosts();
+                    }
+                    return JSON.parse(data);
+                } catch (e) {
+                    console.error('Error reading posts:', e);
+                    return [];
+                }
+            }
+
+            function initializeSample() {
+                try {
+                    localStorage.setItem(POSTS_KEY, JSON.stringify(SAMPLE_POSTS));
+                    const maxId = SAMPLE_POSTS.reduce((max, p) => {
+                        const num = parseInt(p.id.replace('post_', ''));
+                        return num > max ? num : max;
+                    }, 0);
+                    localStorage.setItem(ID_KEY, String(maxId + 1));
+
+                    if (!localStorage.getItem(USER_KEY)) {
+                        localStorage.setItem(USER_KEY, JSON.stringify(SAMPLE_USER));
+                    }
+
+                    if (!localStorage.getItem(REPORTS_KEY)) {
+                        localStorage.setItem(REPORTS_KEY, JSON.stringify(SAMPLE_REPORTS));
+                    }
+                } catch (e) {
+                    console.error('Error initializing samples:', e);
+                }
+            }
+
+            function getCurrentUser() {
+                try {
+                    const data = localStorage.getItem(USER_KEY);
+                    if (!data) {
+                        localStorage.setItem(USER_KEY, JSON.stringify(SAMPLE_USER));
+                        return SAMPLE_USER;
+                    }
+                    return JSON.parse(data);
+                } catch (e) {
+                    console.error('Error reading user:', e);
+                    return SAMPLE_USER;
+                }
+            }
+
+            function getReports() {
+                try {
+                    const data = localStorage.getItem(REPORTS_KEY);
+                    if (!data) {
+                        localStorage.setItem(REPORTS_KEY, JSON.stringify(SAMPLE_REPORTS));
+                        return SAMPLE_REPORTS;
+                    }
+                    return JSON.parse(data);
+                } catch (e) {
+                    console.error('Error reading reports:', e);
+                    return [];
+                }
+            }
+
+            function getPostById(id) {
+                const posts = getPosts();
+                return posts.find(p => p.id === id) || null;
+            }
+
+            function getUserReports(anonymousId) {
+                const reports = getReports();
+                return reports.filter(r => r.anonymousId === anonymousId);
+            }
+
+            function broadcastChange(action) {
+                try {
+                    localStorage.setItem('peoplesPress_lastAction', JSON.stringify({
+                        action: action,
+                        timestamp: Date.now()
+                    }));
+                } catch (e) { /* ignore */ }
+            }
+
+            function onStorageChange(callback) {
+                window.addEventListener('storage', function(e) {
+                    if (e.key === REPORTS_KEY || e.key === POSTS_KEY || e.key === 'peoplesPress_lastAction') {
+                        callback(e);
+                    }
+                });
+            }
+
+            window.PostStore = {
+                getPosts: getPosts,
+                getCurrentUser: getCurrentUser,
+                getReports: getReports,
+                getPostById: getPostById,
+                getUserReports: getUserReports,
+                onStorageChange: onStorageChange,
+                broadcastChange: broadcastChange
+            };
+
+            console.log('📦 PostStore loaded');
+        })();
+    </script>
+
+    <!-- ============================================================
+    MAIN APPLICATION
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            const tableBody = document.getElementById('reportsTableBody');
+            const topbarAnonId = document.getElementById('topbarAnonId');
+
+            // Modal refs
+            const modal = document.getElementById('detailModal');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalCloseAction = document.getElementById('modalCloseActionBtn');
+            const modalSub = document.getElementById('modalSub');
+            const modalBody = document.getElementById('modalBody');
+
+            // Toast
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            let toastTimeout;
+
+            function showToast(message, type = 'success') {
+                toast.className = 'toast ' + type;
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3500);
+                lucide.createIcons();
+            }
+
+            // ---- Format date ----
+            function formatDate(dateStr) {
+                if (!dateStr) return '—';
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return '—';
+                return d.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            }
+
+            // ---- Format status ----
+            function formatStatus(status) {
+                const map = {
+                    'under_review': 'Under Review',
+                    'resolved': 'Resolved',
+                    'rejected': 'Rejected'
+                };
+                return map[status] || status || 'Under Review';
+            }
+
+            function getStatusClass(status) {
+                return 'status-' + (status || 'under_review');
+            }
+
+            // ---- Render reports ----
+            function renderReports() {
+                const user = window.PostStore.getCurrentUser();
+                const anonymousId = user.anonymousId || 'PP0000';
+                topbarAnonId.textContent = 'Anon ID: ' + anonymousId;
+
+                const userReports = window.PostStore.getUserReports(anonymousId);
+
+                if (userReports.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i data-lucide="flag"></i>
+                                    <h3>No reports yet</h3>
+                                    <p>You haven't reported any news posts.</p>
+                                    <a href="index.html" class="btn-browse">Browse News</a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    lucide.createIcons();
+                    return;
+                }
+
+                tableBody.innerHTML = userReports.map(report => {
+                    const post = window.PostStore.getPostById(report.postId);
+                    const title = post ? post.title : 'News post unavailable';
+                    const titleClass = post ? 'post-title' : 'post-unavailable';
+
+                    return `
+                        <tr class="clickable-row" data-report-id="${report.id}">
+                            <td data-label="News Title">
+                                <span class="${titleClass}">${escapeHtml(title)}</span>
+                            </td>
+                            <td data-label="Reason">
+                                <span class="reason-badge">${escapeHtml(report.reason || 'Other')}</span>
+                            </td>
+                            <td data-label="Reported On">
+                                ${formatDate(report.submittedAt)}
+                            </td>
+                            <td data-label="Status">
+                                <span class="status-badge ${getStatusClass(report.status)}">
+                                    ${formatStatus(report.status)}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                lucide.createIcons();
+
+                // Click to open modal
+                document.querySelectorAll('.clickable-row').forEach(row => {
+                    row.addEventListener('click', function() {
+                        const reportId = this.dataset.reportId;
+                        const report = userReports.find(r => r.id === reportId);
+                        if (report) openModal(report);
+                    });
+                });
+            }
+
+            // ---- Escape HTML ----
+            function escapeHtml(str) {
+                if (!str) return '';
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // ---- Modal ----
+            function openModal(report) {
+                const post = window.PostStore.getPostById(report.postId);
+                const title = post ? post.title : 'News post unavailable';
+
+                modalSub.textContent = '#' + report.id.replace('report_', '');
+
+                modalBody.innerHTML = `
+                    <div class="modal-detail-row">
+                        <span class="label">News</span>
+                        <span class="value">${escapeHtml(title)}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="label">Reason</span>
+                        <span class="value">${escapeHtml(report.reason || 'Other')}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="label">Reported On</span>
+                        <span class="value">${formatDate(report.submittedAt)}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="label">Status</span>
+                        <span class="value">
+                            <span class="status-badge ${getStatusClass(report.status)}">
+                                ${formatStatus(report.status)}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="label">Additional Details</span>
+                        <span class="value">${escapeHtml(report.details || 'No additional details provided.')}</span>
+                    </div>
+                `;
+
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                lucide.createIcons();
+            }
+
+            function closeModal() {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            modalCloseAction.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+
+            // ---- Sidebar toggle ----
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.getElementById('hamburgerBtn');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            hamburger.addEventListener('click', openSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth < 820) closeSidebar();
+                });
+            });
+
+            // ---- Logout ----
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    showToast('👋 Logged out successfully.', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 800);
+                }
+            });
+
+            // ---- Profile dropdown ----
+            const profileArea = document.getElementById('profileArea');
+            profileArea.addEventListener('click', function() {
+                window.location.href = 'profile.html';
+            });
+
+            // ---- Storage events ----
+            window.PostStore.onStorageChange(function(e) {
+                if (e.key === 'peoplesPressReports' || e.key === 'peoplesPress_posts' || e.key ===
+                    'peoplesPress_lastAction') {
+                    renderReports();
+                }
+            });
+
+            // ---- Init ----
+            renderReports();
+            lucide.createIcons();
+
+            console.log('📋 my-reports.html ready');
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People's Press · Latest News</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-logo {
+            width: 36px;
+            height: 36px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.3px;
+            color: #111827;
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #4b5563;
+            text-decoration: none;
+            transition: color 0.15s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #111827;
+        }
+
+        .nav-link.active {
+            color: #2563eb;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2563eb;
+            border-radius: 2px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+
+        .language-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .language-btn i {
+            font-size: 0.75rem;
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            padding: 0.4rem 0;
+            min-width: 140px;
+            display: none;
+            z-index: 60;
+        }
+
+        .lang-dropdown.open {
+            display: block;
+        }
+
+        .lang-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 1.2rem;
+            border: none;
+            background: none;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #1f2937;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .lang-dropdown button:hover {
+            background: #f3f4f6;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 2.5rem 3rem;
+        }
+
+        /* ----- HEADER ----- */
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .news-header-left h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #111827;
+        }
+
+        .news-header-left .sub {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-top: 0.1rem;
+        }
+
+        .news-header-right {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            min-width: 280px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.55rem 1rem 0.55rem 2.6rem;
+            border: 1px solid #d1d5db;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        .search-box .search-icon i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .category-filter select {
+            padding: 0.55rem 2.2rem 0.55rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            min-width: 140px;
+            transition: border-color 0.15s;
+        }
+
+        .category-filter select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* ===== NEWS LAYOUT ===== */
+        .news-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 2.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ----- NEWS GRID ----- */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .news-card {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            transition: transform 0.15s, box-shadow 0.2s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-image {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background: #eef2f6;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .news-card:hover .card-image img {
+            transform: scale(1.02);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #fbbf24;
+            color: #78350f;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .card-body {
+            padding: 1rem 1.2rem 1.2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body .category-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-body h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.3rem;
+            color: #111827;
+        }
+
+        .card-body .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body .meta i {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .card-body .excerpt {
+            font-size: 0.9rem;
+            color: #4b5563;
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.8rem;
+            margin-top: 0.6rem;
+            border-top: 1px solid #f1f3f6;
+        }
+
+        .card-footer .contributor {
+            font-size: 0.8rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .card-footer .contributor i {
+            width: 14px;
+            height: 14px;
+        }
+
+        .card-footer .reactions {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .card-footer .reactions button {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.15s;
+            padding: 0.1rem 0.2rem;
+        }
+
+        .card-footer .reactions button:hover {
+            color: #2563eb;
+        }
+
+        .card-footer .reactions button.liked {
+            color: #2563eb;
+        }
+
+        .card-footer .reactions button i {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #eef2f6;
+            padding: 1.2rem 1.2rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .sidebar-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.2px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .category-item {
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: background 0.12s, color 0.12s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-item:hover {
+            background: #f3f4f6;
+        }
+
+        .category-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .category-item .count {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .category-item.active .count {
+            color: #2563eb;
+        }
+
+        .submit-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #eef2f6;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .submit-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.3rem;
+        }
+
+        .submit-card p {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .submit-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 0.6rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: #6d28d9;
+            transform: scale(1.01);
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 640px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 2rem 2rem 1.8rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            transform: scale(0.96);
+            transition: transform 0.25s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.15s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #111827;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 1.2rem;
+            background: #eef2f6;
+        }
+
+        .modal-content .category-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal-content h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0.3rem 0 0.5rem;
+            line-height: 1.2;
+        }
+
+        .modal-content .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-content .modal-meta i {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .modal-content .modal-desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #374151;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-content .modal-source {
+            font-size: 0.85rem;
+            color: #6b7280;
+            padding: 0.5rem 0.8rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-content .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.8rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .modal-content .modal-footer .contributor {
+            font-size: 0.85rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .modal-content .modal-footer .reactions {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .modal-content .modal-footer .reactions button {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.15s;
+            padding: 0.1rem 0.2rem;
+        }
+
+        .modal-content .modal-footer .reactions button:hover {
+            color: #2563eb;
+        }
+
+        .modal-content .modal-footer .reactions button.liked {
+            color: #2563eb;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #d1d5db;
+            margin-bottom: 0.8rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            color: #374151;
+            margin-bottom: 0.2rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 1.5rem 1.8rem 2.5rem;
+            }
+            .news-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .sidebar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            .submit-card {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .navbar {
+                padding: 0 1.2rem;
+                height: 60px;
+                flex-wrap: wrap;
+            }
+            .nav-center {
+                display: none;
+            }
+            .news-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .news-header-right {
+                flex-direction: column;
+                min-width: unset;
+            }
+            .search-box {
+                min-width: unset;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 1rem 1rem 2rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+            .modal-content img {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0 0.8rem;
+                height: 56px;
+            }
+            .nav-brand {
+                font-size: 1rem;
+            }
+            .nav-logo {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            .language-btn {
+                padding: 0.3rem 0.8rem 0.3rem 1rem;
+                font-size: 0.8rem;
+            }
+            .news-header-left h1 {
+                font-size: 1.5rem;
+            }
+            .card-image {
+                height: 160px;
+            }
+            .modal-content {
+                padding: 1.2rem;
+            }
+            .modal-content img {
+                height: 150px;
+            }
+            .modal-content h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* ===== UTILITIES ===== */
+        i[data-lucide] {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar" role="navigation">
+        <div class="nav-left">
+            <div class="nav-logo" aria-hidden="true">PP</div>
+            <span class="nav-brand">People's Press</span>
+        </div>
+        <div class="nav-center">
+            <a href="#" class="nav-link active">Home</a>
+            <a href="#" class="nav-link">Categories</a>
+            <a href="#" class="nav-link">Trending</a>
+            <a href="#" class="nav-link">About</a>
+        </div>
+        <div class="nav-right">
+            <div class="language-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+                <i data-lucide="globe"></i> Language <i data-lucide="chevron-down"></i>
+                <div class="lang-dropdown" id="langDropdown" role="menu">
+                    <button role="menuitem" data-lang="en">English</button>
+                    <button role="menuitem" data-lang="hi">Hindi</button>
+                    <button role="menuitem" data-lang="as">Assamese</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="container">
+
+        <!-- News Header -->
+        <section class="news-header">
+            <div class="news-header-left">
+                <h1>Latest News</h1>
+                <div class="sub">Real stories from real people</div>
+            </div>
+            <div class="news-header-right">
+                <div class="search-box">
+                    <span class="search-icon"><i data-lucide="search"></i></span>
+                    <input type="text" id="searchInput" placeholder="Search news..." aria-label="Search news" />
+                </div>
+                <div class="category-filter">
+                    <select id="categoryFilter" aria-label="Filter by category">
+                        <option value="all">All Categories</option>
+                        <option value="Politics">Politics</option>
+                        <option value="Education">Education</option>
+                        <option value="Environment">Environment</option>
+                        <option value="Infrastructure">Infrastructure</option>
+                        <option value="Health">Health</option>
+                        <option value="Crime">Crime</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Layout -->
+        <section class="news-layout">
+
+            <!-- News Grid -->
+            <div class="news-grid" id="newsGrid" role="list">
+                <!-- Cards rendered by JS -->
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar" role="complementary">
+
+                <!-- Categories -->
+                <div class="sidebar-card">
+                    <h4>Categories</h4>
+                    <div class="category-list" id="categoryList">
+                        <div class="category-item active" data-category="all">All <span class="count">0</span></div>
+                        <div class="category-item" data-category="Politics">Politics <span class="count">0</span></div>
+                        <div class="category-item" data-category="Education">Education <span class="count">0</span></div>
+                        <div class="category-item" data-category="Environment">Environment <span class="count">0</span></div>
+                        <div class="category-item" data-category="Infrastructure">Infrastructure <span class="count">0</span></div>
+                        <div class="category-item" data-category="Health">Health <span class="count">0</span></div>
+                        <div class="category-item" data-category="Crime">Crime <span class="count">0</span></div>
+                        <div class="category-item" data-category="Others">Others <span class="count">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Submit Card -->
+                <div class="submit-card">
+                    <h4>Submit News</h4>
+                    <p>Share what's happening around you.</p>
+                    <a href="new-post.html" class="submit-btn">
+                        Submit Now <i data-lucide="arrow-up-right"></i>
+                    </a>
+                </div>
+
+            </aside>
+        </section>
+    </main>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+            <img id="modalImage" src="" alt="" />
+            <div class="category-tag" id="modalCategory"></div>
+            <h2 id="modalTitle"></h2>
+            <div class="modal-meta">
+                <span><i data-lucide="map-pin"></i> <span id="modalLocation"></span></span>
+                <span><i data-lucide="calendar"></i> <span id="modalDate"></span></span>
+            </div>
+            <div class="modal-desc" id="modalDescription"></div>
+            <div class="modal-source" id="modalSource"></div>
+            <div class="modal-footer">
+                <div class="contributor">
+                    <i data-lucide="user"></i> Anonymous Contributor
+                </div>
+                <div class="reactions">
+                    <button id="modalLikeBtn" aria-label="Like">
+                        <i data-lucide="heart"></i> <span id="modalLikeCount">0</span>
+                    </button>
+                    <span><i data-lucide="message-circle"></i> <span id="modalCommentCount">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== POST STORE (inline for self-contained) ===== -->
+    <script>
+        // ============================================================
+        // POST STORE — shared storage layer
+        // ============================================================
+        (function() {
+            'use strict';
+
+            const STORAGE_KEY = 'peoplesPressPosts';
+            const ID_KEY = 'peoplesPress_nextId';
+            const LIKES_KEY = 'peoplesPress_likes';
+
+            const SAMPLE_POSTS = [{
+                id: 'post_1',
+                title: 'Heavy rainfall causes flooding in Assam',
+                category: 'Environment',
+                location: 'Assam, India',
+                description: 'Several areas in Assam are affected due to continuous heavy rainfall and flooding. Rescue operations are underway in the worst-hit districts.',
+                source: 'Local witness reports',
+                evidence: ['https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=600&h=360&fit=crop&crop=center&auto=format'],
+                status: 'approved',
+                featured: true,
+                submittedAt: '2026-08-10T11:30:00Z',
+                likes: 125,
+                comments: 12
+            }, {
+                id: 'post_2',
+                title: 'Local school students protest for better facilities',
+                category: 'Education',
+                location: 'Guwahati, Assam',
+                description: 'Students are demanding improvements in basic school facilities and infrastructure. The protest has been peaceful so far.',
+                source: 'Student representative',
+                evidence: ['https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=360&fit=crop&crop=center&auto=format'],
+                status: 'approved',
+                featured: false,
+                submittedAt: '2026-08-09T16:15:00Z',
+                likes: 78,
+                comments: 5
+            }, {
+                id: 'post_3',
+                title: 'Water shortage in several areas continues',
+                category: 'Infrastructure',
+                location: 'Dibrugarh, Assam',
+                description: 'People are facing difficulties due to irregular water supply in several areas. Tanker water is being distributed.',
+                source: 'Local resident',
+                evidence: ['https://images.unsplash.com/photo-1545665277-5937489579f2?w=600&h=360&fit=crop&crop=center&auto=format'],
+                status: 'approved',
+                featured: false,
+                submittedAt: '2026-08-08T09:20:00Z',
+                likes: 34,
+                comments: 3
+            }, {
+                id: 'post_4',
+                title: 'Garbage not collected for more than a week',
+                category: 'Infrastructure',
+                location: 'Jorhat, Assam',
+                description: 'Waste bins in several wards have not been cleared since last week, leading to health concerns.',
+                source: 'Local shopkeeper',
+                evidence: ['https://images.unsplash.com/photo-1605600659908-0ef719419d41?w=600&h=360&fit=crop&crop=center&auto=format'],
+                status: 'declined',
+                featured: false,
+                submittedAt: '2026-08-07T14:10:00Z',
+                likes: 12,
+                comments: 2
+            }];
+
+            function getPosts() {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEY);
+                    if (!data) {
+                        initializeSample();
+                        return getPosts();
+                    }
+                    return JSON.parse(data);
+                } catch (e) {
+                    console.error('Error reading posts:', e);
+                    return [];
+                }
+            }
+
+            function initializeSample() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_POSTS));
+                    const maxId = SAMPLE_POSTS.reduce((max, p) => {
+                        const num = parseInt(p.id.replace('post_', ''));
+                        return num > max ? num : max;
+                    }, 0);
+                    localStorage.setItem(ID_KEY, String(maxId + 1));
+                    broadcastChange('init');
+                } catch (e) {
+                    console.error('Error initializing samples:', e);
+                }
+            }
+
+            function getPostById(id) {
+                const posts = getPosts();
+                return posts.find(p => p.id === id) || null;
+            }
+
+            function createPost(postData) {
+                const posts = getPosts();
+                const nextId = parseInt(localStorage.getItem(ID_KEY) || '5');
+                const newPost = {
+                    id: 'post_' + nextId,
+                    ...postData,
+                    submittedAt: new Date().toISOString(),
+                    status: 'pending',
+                    featured: false,
+                    likes: 0,
+                    comments: 0
+                };
+                posts.unshift(newPost);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+                localStorage.setItem(ID_KEY, String(nextId + 1));
+                broadcastChange('create');
+                return newPost;
+            }
+
+            function updatePost(id, updates) {
+                const posts = getPosts();
+                const index = posts.findIndex(p => p.id === id);
+                if (index === -1) return null;
+                posts[index] = { ...posts[index], ...updates };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+                broadcastChange('update');
+                return posts[index];
+            }
+
+            function getApprovedPosts() {
+                const posts = getPosts();
+                return posts.filter(p => p.status === 'approved');
+            }
+
+            function getLikes() {
+                try {
+                    return JSON.parse(localStorage.getItem(LIKES_KEY) || '{}');
+                } catch { return {}; }
+            }
+
+            function setLikes(likes) {
+                localStorage.setItem(LIKES_KEY, JSON.stringify(likes));
+            }
+
+            function toggleLike(postId) {
+                const likes = getLikes();
+                const key = 'like_' + postId;
+                const currentlyLiked = !!likes[key];
+                const post = getPostById(postId);
+                if (!post) return null;
+
+                if (currentlyLiked) {
+                    delete likes[key];
+                    post.likes = Math.max(0, (post.likes || 0) - 1);
+                } else {
+                    likes[key] = true;
+                    post.likes = (post.likes || 0) + 1;
+                }
+                setLikes(likes);
+                updatePost(postId, { likes: post.likes });
+                return { liked: !currentlyLiked, count: post.likes };
+            }
+
+            function isLiked(postId) {
+                const likes = getLikes();
+                return !!likes['like_' + postId];
+            }
+
+            function broadcastChange(action) {
+                try {
+                    localStorage.setItem('peoplesPress_lastAction', JSON.stringify({
+                        action: action,
+                        timestamp: Date.now()
+                    }));
+                } catch (e) { /* ignore */ }
+            }
+
+            function onStorageChange(callback) {
+                window.addEventListener('storage', function(e) {
+                    if (e.key === STORAGE_KEY || e.key === 'peoplesPress_lastAction') {
+                        callback(e);
+                    }
+                });
+            }
+
+            window.PostStore = {
+                getPosts: getPosts,
+                getPostById: getPostById,
+                createPost: createPost,
+                updatePost: updatePost,
+                getApprovedPosts: getApprovedPosts,
+                toggleLike: toggleLike,
+                isLiked: isLiked,
+                onStorageChange: onStorageChange,
+                broadcastChange: broadcastChange
+            };
+
+            console.log('📦 PostStore initialized');
+        })();
+    </script>
+
+    <!-- ============================================================
+    MAIN APPLICATION
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            const grid = document.getElementById('newsGrid');
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const categoryList = document.getElementById('categoryList');
+
+            // Modal refs
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalClose = document.getElementById('modalClose');
+            const modalImage = document.getElementById('modalImage');
+            const modalCategory = document.getElementById('modalCategory');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalLocation = document.getElementById('modalLocation');
+            const modalDate = document.getElementById('modalDate');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalSource = document.getElementById('modalSource');
+            const modalLikeBtn = document.getElementById('modalLikeBtn');
+            const modalLikeCount = document.getElementById('modalLikeCount');
+            const modalCommentCount = document.getElementById('modalCommentCount');
+
+            let currentModalPostId = null;
+            let currentPosts = [];
+
+            // ---- Render ----
+            function renderPosts(posts) {
+                currentPosts = posts;
+                if (!posts || posts.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <i data-lucide="newspaper"></i>
+                            <h3>No news found</h3>
+                            <p>Check back later for new stories.</p>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                    updateCategoryCounts([]);
+                    return;
+                }
+
+                grid.innerHTML = posts.map(post => {
+                    const imgSrc = post.evidence && post.evidence.length > 0 ?
+                        post.evidence[0] :
+                        'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=600&h=360&fit=crop&crop=center&auto=format';
+
+                    const date = new Date(post.submittedAt);
+                    const dateStr = date.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+
+                    const liked = window.PostStore.isLiked(post.id);
+
+                    return `
+                        <div class="news-card" data-id="${post.id}" role="listitem">
+                            <div class="card-image">
+                                <img src="${imgSrc}" alt="${post.title}" loading="lazy" />
+                                ${post.featured ? '<span class="featured-badge">Featured</span>' : ''}
+                            </div>
+                            <div class="card-body">
+                                <div class="category-tag">${post.category || 'News'}</div>
+                                <h3>${escapeHtml(post.title)}</h3>
+                                <div class="meta">
+                                    <span><i data-lucide="map-pin"></i> ${escapeHtml(post.location)}</span>
+                                    <span><i data-lucide="calendar"></i> ${dateStr}</span>
+                                </div>
+                                <p class="excerpt">${escapeHtml(post.description)}</p>
+                                <div class="card-footer">
+                                    <div class="contributor">
+                                        <i data-lucide="user"></i> Anonymous Contributor
+                                    </div>
+                                    <div class="reactions">
+                                        <button class="like-btn ${liked ? 'liked' : ''}" data-id="${post.id}" aria-label="Like">
+                                            <i data-lucide="${liked ? 'heart' : 'heart'}"></i>
+                                            <span>${post.likes || 0}</span>
+                                        </button>
+                                        <span><i data-lucide="message-circle"></i> ${post.comments || 0}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                lucide.createIcons();
+
+                // Like buttons
+                document.querySelectorAll('.like-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        handleLike(id);
+                    });
+                });
+
+                // Click card -> modal
+                document.querySelectorAll('.news-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        const post = window.PostStore.getPostById(id);
+                        if (post) openModal(post);
+                    });
+                });
+
+                updateCategoryCounts(posts);
+            }
+
+            // ---- Filter & Search ----
+            function getFilteredPosts() {
+                const allApproved = window.PostStore.getApprovedPosts();
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                const category = categoryFilter.value;
+
+                return allApproved.filter(post => {
+                    const matchSearch = !searchTerm ||
+                        post.title.toLowerCase().includes(searchTerm) ||
+                        post.description.toLowerCase().includes(searchTerm) ||
+                        post.location.toLowerCase().includes(searchTerm) ||
+                        (post.category && post.category.toLowerCase().includes(searchTerm));
+
+                    const matchCategory = category === 'all' ||
+                        (post.category && post.category === category);
+
+                    return matchSearch && matchCategory;
+                });
+            }
+
+            function applyFilters() {
+                const filtered = getFilteredPosts();
+                renderPosts(filtered);
+            }
+
+            // ---- Category counts ----
+            function updateCategoryCounts(posts) {
+                const counts = {};
+                posts.forEach(p => {
+                    const cat = p.category || 'Others';
+                    counts[cat] = (counts[cat] || 0) + 1;
+                });
+
+                document.querySelectorAll('.category-item').forEach(item => {
+                    const cat = item.dataset.category;
+                    const count = cat === 'all' ? posts.length : (counts[cat] || 0);
+                    const span = item.querySelector('.count');
+                    if (span) span.textContent = count;
+                });
+            }
+
+            // ---- Sidebar category click ----
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const cat = this.dataset.category;
+                    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Sync dropdown
+                    categoryFilter.value = cat;
+                    applyFilters();
+                });
+            });
+
+            // ---- Dropdown sync with sidebar ----
+            categoryFilter.addEventListener('change', function() {
+                const val = this.value;
+                document.querySelectorAll('.category-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.category === val);
+                });
+                applyFilters();
+            });
+
+            // ---- Search ----
+            searchInput.addEventListener('input', applyFilters);
+
+            // ---- Like ----
+            function handleLike(postId) {
+                const result = window.PostStore.toggleLike(postId);
+                if (result) {
+                    // Re-render with current filters
+                    applyFilters();
+                    // Also update modal if open
+                    if (currentModalPostId === postId) {
+                        const post = window.PostStore.getPostById(postId);
+                        if (post) updateModalLike(post);
+                    }
+                }
+            }
+
+            // ---- Modal ----
+            function openModal(post) {
+                currentModalPostId = post.id;
+                const imgSrc = post.evidence && post.evidence.length > 0 ?
+                    post.evidence[0] :
+                    'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=600&h=360&fit=crop&crop=center&auto=format';
+
+                modalImage.src = imgSrc;
+                modalImage.alt = post.title;
+                modalCategory.textContent = post.category || 'News';
+                modalTitle.textContent = post.title;
+                modalLocation.textContent = post.location;
+                modalDate.textContent = new Date(post.submittedAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                modalDescription.textContent = post.description;
+                modalSource.textContent = post.source ? 'Source: ' + post.source : '';
+                modalSource.style.display = post.source ? 'block' : 'none';
+                modalLikeCount.textContent = post.likes || 0;
+                modalCommentCount.textContent = post.comments || 0;
+
+                const liked = window.PostStore.isLiked(post.id);
+                modalLikeBtn.classList.toggle('liked', liked);
+                modalLikeBtn.querySelector('i').setAttribute('data-lucide', liked ? 'heart' : 'heart');
+
+                modalOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                lucide.createIcons();
+            }
+
+            function updateModalLike(post) {
+                modalLikeCount.textContent = post.likes || 0;
+                const liked = window.PostStore.isLiked(post.id);
+                modalLikeBtn.classList.toggle('liked', liked);
+                modalLikeBtn.querySelector('i').setAttribute('data-lucide', liked ? 'heart' : 'heart');
+                lucide.createIcons();
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+                currentModalPostId = null;
+            }
+
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+
+            modalLikeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (currentModalPostId) {
+                    handleLike(currentModalPostId);
+                }
+            });
+
+            // ---- Escape helper ----
+            function escapeHtml(str) {
+                if (!str) return '';
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // ---- Storage events (cross-tab) ----
+            window.PostStore.onStorageChange(function(e) {
+                if (e.key === 'peoplesPress_posts') {
+                    applyFilters();
+                }
+            });
+
+            // ---- Language dropdown ----
+            const langBtn = document.getElementById('langBtn');
+            const langDropdown = document.getElementById('langDropdown');
+
+            langBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                langDropdown.classList.toggle('open');
+                this.setAttribute('aria-expanded', langDropdown.classList.contains('open'));
+            });
+
+            document.addEventListener('click', function() {
+                langDropdown.classList.remove('open');
+                langBtn.setAttribute('aria-expanded', 'false');
+            });
+
+            langDropdown.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const lang = this.dataset.lang;
+                    const labels = {
+                        en: 'English',
+                        hi: 'Hindi',
+                        as: 'Assamese'
+                    };
+                    alert(`🌐 Language changed to ${labels[lang] || lang} (demo)`);
+                    langDropdown.classList.remove('open');
+                    langBtn.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // ---- Init ----
+            applyFilters();
+            lucide.createIcons();
+
+            console.log('📰 People\'s Press public homepage ready');
+        })();
+    </script>
+
+</body>
+</html>

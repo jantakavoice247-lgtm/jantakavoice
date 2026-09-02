@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People's Press · Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f4fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            color: #0b1a2e;
+        }
+
+        .app-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+            padding: 2rem 2.5rem 3rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e9edf2;
+            margin-bottom: 2.5rem;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-left a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-profile-icon {
+            width: 44px;
+            height: 44px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.15);
+            flex-shrink: 0;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #0b1a2e;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1f2a44;
+            text-decoration: none;
+            transition: color 0.15s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        /* ===== LANGUAGE SWITCHER ===== */
+        .language-switcher {
+            position: relative;
+            display: inline-block;
+        }
+        .lang-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem 0.5rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.18);
+            font-family: 'Inter', sans-serif;
+        }
+        .lang-btn:hover {
+            background: #1d4ed8;
+            transform: scale(1.01);
+        }
+        .lang-btn i {
+            font-size: 0.75rem;
+        }
+        .lang-dropdown {
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            padding: 0.4rem 0;
+            min-width: 140px;
+            display: none;
+            z-index: 60;
+        }
+        .lang-dropdown.open {
+            display: block;
+        }
+        .lang-option {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 1.2rem;
+            border: none;
+            background: none;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #1f2937;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .lang-option:hover {
+            background: #f3f4f6;
+        }
+
+        #hero-section {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .hero-voice {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #2563eb;
+            margin-bottom: 0.2rem;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: #0b1a2e;
+            letter-spacing: -1px;
+        }
+
+        .hero-title .blue {
+            color: #2563eb;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: #2d3b54;
+            max-width: 90%;
+            line-height: 1.6;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 1.6rem 1.6rem 1.8rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #eef2f6;
+            transition: transform 0.15s, box-shadow 0.2s;
+            max-width: 480px;
+        }
+
+        .login-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 30px -8px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-icon {
+            font-size: 1.9rem;
+            margin-bottom: 0.4rem;
+            display: inline-block;
+        }
+
+        .card-icon .fa-shield-halved {
+            color: #2563eb;
+        }
+
+        .login-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            color: #0b1a2e;
+        }
+
+        .login-card p {
+            font-size: 0.95rem;
+            color: #3d4b63;
+            margin: 0.4rem 0 1.2rem 0;
+            line-height: 1.4;
+        }
+
+        .card-btn {
+            border: none;
+            padding: 0.7rem 1.6rem 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            background: #2563eb;
+        }
+
+        .card-btn i {
+            font-size: 0.8rem;
+        }
+
+        .card-btn:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+        }
+
+        .login-form-container {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .login-form-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-form-wrapper {
+            max-width: 440px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0.5rem 0;
+        }
+
+        .login-form-wrapper .form-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form-wrapper .form-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0b1a2e;
+        }
+
+        .login-form-wrapper .form-header p {
+            font-size: 0.95rem;
+            color: #6b7a93;
+            margin-top: 0.2rem;
+        }
+
+        .login-form-wrapper .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: none;
+            border: none;
+            color: #6b7a93;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.4rem 0;
+            margin-bottom: 1rem;
+            transition: color 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-form-wrapper .back-btn:hover {
+            color: #2563eb;
+        }
+
+        .login-form-wrapper .back-btn i {
+            font-size: 0.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1f2a44;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .form-group .input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa8b9;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.8rem;
+            border: 1.5px solid #e2e7ed;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: #fafbfc;
+            color: #0b1a2e;
+        }
+
+        .form-group input::placeholder {
+            color: #9aa8b9;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+            background: #ffffff;
+        }
+
+        .form-group .error-msg {
+            font-size: 0.8rem;
+            color: #dc2626;
+            display: none;
+            margin-top: 0.3rem;
+        }
+
+        .form-group.error input {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .form-group.error .error-msg {
+            display: block;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.2rem 0 1.2rem 0;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .form-options .forgot-link {
+            font-size: 0.85rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .form-options .forgot-link:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        .form-options .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: #4a5a72;
+            cursor: pointer;
+        }
+
+        .form-options .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #2563eb;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            background: #2563eb;
+        }
+
+        .btn-login:hover {
+            background: #1d4ed8;
+            transform: scale(1.01);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-footer {
+            margin-top: 1.2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4a5a72;
+        }
+
+        .form-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .form-footer a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+            object-fit: cover;
+            aspect-ratio: 4/3;
+            background: #eef2f6;
+            transition: transform 0.2s;
+            display: block;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.005);
+        }
+
+        @media (max-width: 1024px) {
+            .app-wrapper {
+                padding: 1.8rem 1.8rem 2.5rem;
+            }
+            .hero-title {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            #hero-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .hero-right {
+                order: -1;
+            }
+            .hero-image {
+                max-width: 100%;
+                aspect-ratio: 16/10;
+            }
+            .hero-desc {
+                max-width: 100%;
+            }
+            .login-form-wrapper {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .app-wrapper {
+                padding: 1.2rem 1rem 2rem;
+                border-radius: 28px;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+            .nav-left {
+                justify-content: center;
+            }
+            .nav-right {
+                justify-content: center;
+                gap: 1rem 1.2rem;
+            }
+            .nav-link {
+                font-size: 0.9rem;
+            }
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            .login-card {
+                padding: 1.4rem;
+                max-width: 100%;
+            }
+            .hero-voice {
+                font-size: 0.8rem;
+            }
+            .lang-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+            .login-form-wrapper .form-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .nav-brand {
+                font-size: 1.2rem;
+            }
+            .nav-profile-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1.1rem;
+            }
+            .card-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+            .form-group input {
+                padding: 0.65rem 1rem 0.65rem 2.6rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f2937;
+            color: white;
+            padding: 1rem 1.8rem;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: none;
+            align-items: center;
+            gap: 0.8rem;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        .toast.success i {
+            color: #34d399;
+        }
+        .toast.error i {
+            color: #f87171;
+        }
+        .toast.info i {
+            color: #60a5fa;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card-wrapper.hidden {
+            display: none;
+        }
+
+        .hero-right .login-illustration {
+            display: block;
+        }
+
+        .hero-right .form-illustration {
+            display: none;
+        }
+
+        .hero-right.show-form .login-illustration {
+            display: none;
+        }
+
+        .hero-right.show-form .form-illustration {
+            display: block;
+        }
+
+        .btn-login .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin: 0 auto;
+        }
+
+        .btn-login.loading .btn-text {
+            display: none;
+        }
+
+        .btn-login.loading .spinner {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .login-help {
+            margin-top: 1rem;
+            padding: 0.8rem 1rem;
+            background: #f0f7ff;
+            border-radius: 12px;
+            border: 1px solid #dbeafe;
+            font-size: 0.8rem;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .login-help i {
+            font-size: 1rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="navbar">
+            <div class="nav-left">
+                <a href="home.html">
+                    <div class="nav-profile-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="nav-brand">People's Press</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="home.html" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#how-it-works" class="nav-link">How it works</a>
+                <a href="#guidelines" class="nav-link">Guidelines</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                
+                <!-- Language Switcher -->
+                <div class="language-switcher" id="langSwitcher">
+                    <button class="lang-btn" id="langBtn">
+                        <i class="fas fa-globe-americas"></i> 
+                        <span id="currentLangDisplay">Language</span> 
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button class="lang-option" data-lang="en">English</button>
+                        <button class="lang-option" data-lang="hi">हिन्दी</button>
+                        <button class="lang-option" data-lang="bn">বাংলা</button>
+                        <button class="lang-option" data-lang="as">অসমীয়া</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="hero-section">
+            <div class="hero-left">
+                <div class="login-card-wrapper" id="loginCardWrapper">
+                    <div class="hero-voice"><i class="fas fa-microphone-alt" style="margin-right: 6px;"></i> The People's Voice</div>
+                    <h1 class="hero-title">
+                        The People's <span class="blue">Press</span>
+                    </h1>
+                    <p class="hero-desc">
+                        A citizen-powered platform for anonymous news reporting and transparent journalism.
+                    </p>
+
+                    <div class="login-card" id="login-card">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <h3>Login</h3>
+                        <p>Sign in to submit or manage news</p>
+                        <button class="card-btn" id="login-btn">
+                            Login <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-form-container" id="loginForm">
+                    <div class="login-form-wrapper">
+                        <button class="back-btn" id="backBtn">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <div class="form-header">
+                            <h2>Welcome Back</h2>
+                            <p>Sign in to your account</p>
+                        </div>
+                        <form id="loginFormElement" novalidate>
+                            <div class="form-group" id="emailGroup">
+                                <label for="loginEmail">Email Address</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="text" id="loginEmail" placeholder="Enter your email" autocomplete="email">
+                                </div>
+                                <div class="error-msg" id="emailError">Please enter your email</div>
+                            </div>
+                            <div class="form-group" id="passwordGroup">
+                                <label for="loginPassword">Password</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+                                </div>
+                                <div class="error-msg" id="passwordError">Please enter your password</div>
+                            </div>
+                            <div class="form-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" id="rememberMe" checked> Remember me
+                                </label>
+                                <a href="#" class="forgot-link" id="forgotLink">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="btn-login" id="submitBtn">
+                                <span class="btn-text">Sign In</span>
+                                <span class="spinner"></span>
+                            </button>
+                            <div class="form-footer">
+                                <span>Don't have an account?</span>
+                                <a href="register.html" id="createAccountLink">Create Account</a>
+                            </div>
+                        </form>
+
+                        <div class="login-help">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Contact your administrator for login credentials.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-right" id="heroRight">
+                <img 
+                    src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=600&h=450&fit=crop&crop=center&auto=format" 
+                    alt="Journalism, microphone, news reporting" 
+                    class="hero-image login-illustration"
+                    loading="lazy"
+                >
+                <img 
+                    src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=450&fit=crop&crop=center&auto=format" 
+                    alt="Login illustration" 
+                    class="hero-image form-illustration"
+                    loading="lazy"
+                >
+            </div>
+        </section>
+
+        <div style="margin-top: 2.5rem; text-align: center; font-size: 0.75rem; color: #8896aa; border-top: 1px solid #ecf0f5; padding-top: 1.2rem; letter-spacing: 0.3px;">
+            <i class="fas fa-shield-alt" style="margin-right: 6px;"></i> anonymous · transparent · citizen-powered
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Login successful!</span>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+    (function() {
+        'use strict';
+
+        const loginCardWrapper = document.getElementById('loginCardWrapper');
+        const loginForm = document.getElementById('loginForm');
+        const heroRight = document.getElementById('heroRight');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const emailGroup = document.getElementById('emailGroup');
+        const passwordGroup = document.getElementById('passwordGroup');
+        const submitBtn = document.getElementById('submitBtn');
+
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        function showLoginCard() {
+            loginCardWrapper.style.display = 'block';
+            loginForm.classList.remove('active');
+            loginForm.style.display = 'none';
+            heroRight.classList.remove('show-form');
+            document.querySelectorAll('.form-group.error').forEach(el => el.classList.remove('error'));
+        }
+
+        function showLoginForm() {
+            loginCardWrapper.style.display = 'none';
+            loginForm.style.display = 'block';
+            loginForm.classList.add('active');
+            heroRight.classList.add('show-form');
+            document.querySelectorAll('.form-group.error').forEach(el => el.classList.remove('error'));
+        }
+
+        document.getElementById('login-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            showLoginForm();
+        });
+
+        document.getElementById('backBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            showLoginCard();
+        });
+
+        function validateField(groupId, value) {
+            const group = document.getElementById(groupId);
+            if (!value || value.trim() === '') {
+                group.classList.add('error');
+                return false;
+            } else {
+                group.classList.remove('error');
+                return true;
+            }
+        }
+
+        function setLoading(btn, isLoading) {
+            if (isLoading) {
+                btn.classList.add('loading');
+                btn.disabled = true;
+            } else {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
+        submitBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const emailOk = validateField('emailGroup', loginEmail.value);
+            const passwordOk = validateField('passwordGroup', loginPassword.value);
+
+            if (!emailOk || !passwordOk) {
+                showToast('❌ Please fill in all fields.', 'error');
+                return;
+            }
+
+            setLoading(this, true);
+
+            try {
+                const email = loginEmail.value.trim();
+                const password = loginPassword.value;
+
+                const response = await window.PeoplesPressAPI.auth.login(email, password);
+                
+                if (response.success) {
+                    const user = response.user;
+                    showToast('✅ Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        if (user.role === 'admin') {
+                            window.location.href = 'admin-dashboard.html';
+                        } else {
+                            window.location.href = 'home.html';
+                        }
+                    }, 800);
+                } else {
+                    showToast('❌ ' + (response.message || 'Invalid email or password.'), 'error');
+                    emailGroup.classList.add('error');
+                    passwordGroup.classList.add('error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('❌ ' + (error.message || 'Login failed. Please try again.'), 'error');
+            } finally {
+                setLoading(submitBtn, false);
+            }
+        });
+
+        loginPassword.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
+
+        loginEmail.addEventListener('input', function() {
+            document.getElementById('emailGroup').classList.remove('error');
+        });
+        loginPassword.addEventListener('input', function() {
+            document.getElementById('passwordGroup').classList.remove('error');
+        });
+
+        document.getElementById('forgotLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('🔑 Password reset will be available in the next update.', 'info');
+        });
+
+        document.getElementById('createAccountLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'register.html';
+        });
+
+        // ============================================================
+        // LANGUAGE SWITCHER
+        // ============================================================
+        const langBtn = document.getElementById('langBtn');
+        const langDropdown = document.getElementById('langDropdown');
+        const currentLangDisplay = document.getElementById('currentLangDisplay');
+
+        const langNames = {
+            'en': 'English',
+            'hi': 'हिन्दी',
+            'bn': 'বাংলা',
+            'as': 'অসমীয়া'
+        };
+
+        // Get saved language
+        let savedLang = localStorage.getItem('peoplesPress_language') || 'en';
+        currentLangDisplay.textContent = langNames[savedLang] || 'English';
+
+        // Toggle dropdown
+        langBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langDropdown.classList.toggle('open');
+        });
+
+        // Close dropdown on outside click
+        document.addEventListener('click', function() {
+            langDropdown.classList.remove('open');
+        });
+
+        // Language options
+        document.querySelectorAll('.lang-option').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const lang = this.dataset.lang;
+                
+                // Save preference
+                localStorage.setItem('peoplesPress_language', lang);
+                currentLangDisplay.textContent = langNames[lang] || lang;
+                
+                // Close dropdown
+                langDropdown.classList.remove('open');
+                
+                showToast(`🌐 Language changed to ${langNames[lang] || lang}`, 'info');
+            });
+        });
+
+        // Check if user is already logged in
+        if (window.PeoplesPressAPI.auth.isLoggedIn()) {
+            const user = window.PeoplesPressAPI.auth.getCurrentUser();
+            if (user) {
+                if (user.role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'home.html';
+                }
+                return;
+            }
+        }
+
+        showLoginCard();
+        console.log('✅ People\'s Press · Login page ready');
+
+    })();
+    </script>
+
+</body>
+</html>
