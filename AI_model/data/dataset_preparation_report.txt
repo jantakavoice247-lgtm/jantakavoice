@@ -1,0 +1,18 @@
+======================================================================
+DATASET PREPARATION REPORT
+======================================================================
+
+Original Fake records:  23,481
+Original Real records:  21,417
+Original Total:         44,898
+
+Removed invalid records: 673
+Removed duplicates:      5,612
+
+Final Fake records:     17,424
+Final Real records:     21,189
+Final Total:            38,613
+
+Training records:       30,890
+Validation records:     3,861
+Testing records:        3,862

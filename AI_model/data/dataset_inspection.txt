@@ -1,0 +1,15 @@
+======================================================================
+DATASET INSPECTION REPORT
+======================================================================
+
+Fake.csv: 23,481 rows
+True.csv: 21,417 rows
+Total: 44,898 rows
+
+Columns:
+  Fake.csv: ['title', 'text', 'subject', 'date']
+  True.csv: ['title', 'text', 'subject', 'date']
+
+Missing values:
+  Fake.csv: {'title': 0, 'text': 0, 'subject': 0, 'date': 0}
+  True.csv: {'title': 0, 'text': 0, 'subject': 0, 'date': 0}
